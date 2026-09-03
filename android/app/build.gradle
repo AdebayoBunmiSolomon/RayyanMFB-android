@@ -1,0 +1,102 @@
+apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "com.facebook.react"
+
+react {
+    autolinkLibrariesWithApp()
+
+    nodeExecutableAndArgs = [
+        project.findProperty("NODE_BINARY") ?: "node"
+    ]
+}
+
+def enableProguardInReleaseBuilds = false
+def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
+
+// Rayyan environment configuration
+project.ext.envConfigFiles = [
+    business: ".env.corporate",
+    retail: ".env.retail",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+android {
+    namespace "com.rayyanmfb.app"
+
+    ndkVersion rootProject.ext.ndkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.rayyanmfb.app"
+
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        versionCode 122
+        versionName "5.0.5"
+
+        resValue "string", "IS_RETAIL", "\"true\""
+        resValue "string", "IS_CORPORATE", "\"false\""
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        retail {
+            applicationId "com.rayyanmfb.app"
+        }
+
+        business {
+            // future business config
+        }
+    }
+}
+
+dependencies {
+    implementation("com.facebook.react:react-android")
+
+    implementation project(':react-native-config')
+
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android")
+    } else {
+        implementation jscFlavor
+    }
+}

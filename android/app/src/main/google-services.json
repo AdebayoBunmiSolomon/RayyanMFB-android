@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "945484295335",
+    "project_id": "r2-mobile-ba508",
+    "storage_bucket": "r2-mobile-ba508.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945484295335:android:671be167f0b55b306ebf82",
+        "android_client_info": {
+          "package_name": "com.rayyanmfb.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFnnsZY7zlSVgafysSKtkXT8iVBN3H5H4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
