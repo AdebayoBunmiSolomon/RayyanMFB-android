@@ -237,9 +237,7 @@ const Home: FC<TabsStackScreenProps<'Home'>> = ({ navigation }) => {
                 : undefined
             }
           />
-        ) : (
-          ''
-        )}
+        ) : null}
 
         <Modal
           visible={showSetPin}

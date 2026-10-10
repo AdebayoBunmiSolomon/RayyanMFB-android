@@ -17,7 +17,8 @@
     "start:retail:ios": "yarn ios:retail:debug",
     "android:retail:apk": "cd android && ./gradlew assembleRetailRelease",
     "android:retail:aab": "cd android && ./gradlew bundleRetailRelease",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "clean:android:build:cache": "cd android && rm -rf app/build app/.cxx build .gradle"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.14",

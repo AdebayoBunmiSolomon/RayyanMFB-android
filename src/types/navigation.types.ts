@@ -202,7 +202,10 @@ export type MainStackParamList = {
   StandingOrder: Record<'item', StandingOrderRoute>;
   Reviews: Record<'item', ReviewRoute>;
   ReviewsRayyan: Record<'item', ReviewRoute>;
-  ReviewsOwnAccount: Record<'item', ReviewRoute>;
+  ReviewsOwnAccount: {
+    item: ReviewRoute;
+    transDetailsFromTransferHistory?: transDetailsFromTransferHistory;
+  };
   TransferReceipt: Record<'item', InterBankResponse>;
   RayyanReceipt: Record<'item', IntraBankResponse>;
   AddBeneficiary: undefined;
@@ -261,6 +264,17 @@ export interface ReviewRoute {
   beneficiaryBankName?: string;
   Faq?: string;
   type?: 'self' | 'rayyan' | 'other' | 'standing-order';
+}
+
+export interface transDetailsFromTransferHistory {
+  institutionName: any;
+  institutionCode: any;
+  accountName: any;
+  customerAccountNumber: any;
+  accountNumber: any;
+  beneficiaryBank: any;
+  amount: any;
+  narration: any;
 }
 
 export type PublicStackScreenProps<Screen extends keyof PublicStackParamList> =

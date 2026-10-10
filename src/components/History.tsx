@@ -89,7 +89,7 @@ const History: React.FC<HistoryProps> = ({
           remarks,
         } = res?.data?.data;
 
-        console.log('from history', res?.data?.data);
+        // console.log('from history', res?.data?.data);
 
         const payload = {
           institutionName: financialInstitution?.institutionName,
@@ -101,6 +101,8 @@ const History: React.FC<HistoryProps> = ({
           amount: formatToNaira(amount).replaceAll('₦', ''),
           narration: remarks,
         };
+
+        console.log('payload from history', payload);
         navigation.navigate('Transfer', {
           type: 'other',
           transDetails: payload,

@@ -23,6 +23,7 @@ interface TransferSuccessModalProps {
   closeModal: () => void;
   onViewReceipt: () => void;
   onAddBeneficiary: () => void;
+  onSchedulePayment?: () => void;
 }
 
 const TransferSuccessModal = ({
@@ -33,6 +34,7 @@ const TransferSuccessModal = ({
   closeModal,
   onViewReceipt,
   // onAddBeneficiary,
+  onSchedulePayment,
   message,
 }: TransferSuccessModalProps) => {
   const { colors } = useTheme();
@@ -142,7 +144,10 @@ const TransferSuccessModal = ({
             </View>
             <Text style={styles.cardText}>Repeat Transaction</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => onSchedulePayment?.()}
+          >
             <View style={styles.cardIcon}>
               <Calendar size={35} color={colors.white} />
             </View>

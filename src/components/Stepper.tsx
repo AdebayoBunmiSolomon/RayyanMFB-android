@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 import { StepperProps } from '../types';
-import { Stack, View } from 'tamagui';
+import { YStack, View } from 'tamagui';
 import uiColors from '../theme/color';
 import { normalizeSize } from '../util/size';
 
@@ -49,7 +49,7 @@ const Stepper = ({ steps, ...others }: StepperProps) => {
               >
                 {step.completed && <Text style={styles.checkmark}>✓</Text>}
               </View>
-              <Stack onLayout={e => handleLabelLayout(e, index)}>
+              <YStack onLayout={e => handleLabelLayout(e, index)}>
                 {step.current ? (
                   <View
                     backgroundColor={'#F5B30D'}
@@ -73,7 +73,7 @@ const Stepper = ({ steps, ...others }: StepperProps) => {
                 >
                   {step.current ? step?.currentLabel : step.label}
                 </Text>
-              </Stack>
+              </YStack>
             </View>
 
             {/* Line */}

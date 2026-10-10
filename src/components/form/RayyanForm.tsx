@@ -16,6 +16,7 @@ import { useErrorHandler } from '../../hooks/useErrorHandler';
 import { useAppToast } from '../../hooks/useAppToast';
 import { clearFormatAmount } from '../../util/format';
 import { Accounts } from '../../types/transfer.types';
+import { NARRATION_REGEX, sanitizeNarration } from '../../util/sanitize';
 
 // Types
 export interface RayyanTransferFormData {
@@ -51,6 +52,13 @@ const rayyanValidationSchema = yup.object().shape({
     .max(10, ({ max }) => `Account number must not exceed ${max} characters`)
     .matches(/^\d+$/, 'Only numbers are allowed')
     .required('Account number is required'),
+  narration: yup
+    .string()
+    .max(100, 'Narration must not exceed 100 characters')
+    .matches(NARRATION_REGEX, {
+      message: 'Narration cannot contain emojis or special characters',
+      excludeEmptyString: true,
+    }),
 });
 
 interface RayyanFormProps {
@@ -102,7 +110,7 @@ const RayyanForm: React.FC<RayyanFormProps> = ({
         beneficiaryAccountName: selectedBeneficiariesHash.accountName,
         amount: values.amount,
         customerAccountNumber: values.customerAccountNumber,
-        remarks: values.narration || '',
+        remarks: sanitizeNarration(values.narration || ''),
         beneficiaryBank: selectedBeneficiariesHash?.beneficiaryBank,
         beneficiaryBankName: selectedBeneficiariesHash?.institutionName || '',
         saveBeneficiary: values?.saveBeneficiary || false,
@@ -118,6 +126,11 @@ const RayyanForm: React.FC<RayyanFormProps> = ({
   const validateForm = (values: any) => {
     try {
       const errors: any = {};
+
+      if (values?.narration && !NARRATION_REGEX.test(values.narration)) {
+        errors.narration =
+          'Narration cannot contain emojis or special characters';
+      }
 
       // Validate customer account
       if (!values?.customerAccountNumber) {
@@ -295,7 +308,10 @@ const RayyanForm: React.FC<RayyanFormProps> = ({
               value={values.narration || ''}
               onChangeText={text => {
                 try {
-                  handleChange('narration')(text);
+                  const sanitized = sanitizeNarration(text);
+                  console.log('RAYYAN raw:', JSON.stringify(text));
+                  console.log('RAYYAN sanitized:', JSON.stringify(sanitized));
+                  handleChange('narration')(sanitized);
                 } catch (error) {
                   handleError(error as Error, 'Rayyan:enterNarration');
                 }

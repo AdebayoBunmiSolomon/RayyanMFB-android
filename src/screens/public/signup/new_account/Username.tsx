@@ -48,16 +48,25 @@ const Username: FC<PublicStackScreenProps<'Username'>> = ({
   route,
 }) => {
   const { item } = route.params;
+  const { showError, showSuccess } = useAppToast();
 
   const [isSecureEntry, setIsSecureEntry] = useState(true);
   const [loading, setLoading] = useState(false);
-  const create = useApi({ endpoint: 'registerExistingAccount' });
+  const create = useApi({
+    endpoint: 'registerExistingAccount',
+    onSuccess: () => showSuccess('Account created successfully!'),
+    onError(_error, errorDetails) {
+      showError(
+        errorDetails?.code ?? 'ERROR_OCCURRED',
+        errorDetails?.message || 'Failed to create account.',
+      );
+    },
+  });
   const [terms] = useLazyGetTermsAndConditionsQuery();
   const [pdf, setPdf] = useState('');
   const [suggestedName, setSuggestedName] = useState<null | string>(null);
 
   const { colors } = useTheme();
-  const { showError } = useAppToast();
 
   const createNewUser = async (val: CreateNewAccount) => {
     setLoading(true);

@@ -82,7 +82,16 @@ const CreateUsername: FC<PublicStackScreenProps<'CreateUsername'>> = ({
       );
     },
   });
-  const requestOtp = useApi({ endpoint: 'existingAccountOtpRequest' });
+  const requestOtp = useApi({
+    endpoint: 'existingAccountOtpRequest',
+    onSuccess: () => showSuccess('OTP sent successfully!'),
+    onError(_error, errorDetails) {
+      showError(
+        errorDetails?.code ?? 'ERROR_OCCURRED',
+        errorDetails?.message || 'Failed to send OTP.',
+      );
+    },
+  });
   const [terms] = useLazyGetTermsAndConditionsQuery();
   const [pdf, setPdf] = useState('');
 

@@ -46,7 +46,8 @@ const ReviewsOwnAccount: FC<MainStackScreenProps<'ReviewsOwnAccount'>> = ({
 }) => {
   const { colors } = useTheme();
   const { styles } = reviewStyles();
-  const { item } = route.params;
+  const { item, transDetailsFromTransferHistory } = route.params;
+
   const amount = item.amount.replace(/,/g, '');
   const { selectedAccount } = useAppSelector(state => state.account);
   const { userType } = useAppSelector(state => state.profile);
@@ -478,8 +479,15 @@ const ReviewsOwnAccount: FC<MainStackScreenProps<'ReviewsOwnAccount'>> = ({
   // Success modal handlers
   const handleSuccessClose = async () => {
     updateState({ isSuccessModalVisible: false });
+    if (item?.type === 'other') {
+      navigation.navigate('Transfer', {
+        type: 'other',
+        transDetails: transDetailsFromTransferHistory,
+      } as any);
+      await getUserDebitAccounts();
+      return;
+    }
     navigation.navigate('Tabs', { screen: 'Home' });
-    await getUserDebitAccounts();
   };
 
   const handleViewReceipt = () => {
@@ -523,6 +531,7 @@ const ReviewsOwnAccount: FC<MainStackScreenProps<'ReviewsOwnAccount'>> = ({
         closeModal={handleSuccessClose}
         onViewReceipt={handleViewReceipt}
         onAddBeneficiary={handleAddBeneficiary}
+        onSchedulePayment={() => navigation.navigate('StandingOrderScreen')}
       />
 
       {/* Token Input Modal - ALWAYS RENDERED */}

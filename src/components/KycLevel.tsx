@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { Heading, Stack, XStack, YStack } from 'tamagui';
+import { Heading, XStack, YStack } from 'tamagui';
 
 import { useTheme } from '../context/ThemeContext';
 import { useAppSelector } from '../hooks/hook';
@@ -122,7 +122,7 @@ const KycLevel = ({ cta }: KycLevelProps) => {
                 disabled={disableUpgrade}
                 onPress={() => navigation.navigate('AccountUpgrade')}
               >
-                <Stack flexDirection="row" alignItems="center" gap={6}>
+                <XStack flexDirection="row" alignItems="center" gap={6}>
                   <Heading
                     opacity={disableUpgrade ? 0.6 : 1}
                     color={colors.lightPrimary}
@@ -135,7 +135,7 @@ const KycLevel = ({ cta }: KycLevelProps) => {
                     opacity={disableUpgrade ? 0.6 : 1}
                     color={colors.lightPrimary}
                   />
-                </Stack>
+                </XStack>
               </TouchableOpacity>
             ) : (
               <ActivityIndicator />

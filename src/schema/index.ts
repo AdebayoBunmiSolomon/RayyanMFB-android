@@ -1,6 +1,8 @@
 import * as yup from 'yup';
 
 import { IS_CORPORATE } from '../../config';
+import { NARRATION_REGEX } from '../util/sanitize';
+import { clearFormatAmount } from '../util/format';
 
 export const loginValidationSchema = yup.object().shape({
   userName: yup.string().required('Username is required'),
@@ -95,6 +97,13 @@ export const otherBankSchema = yup.object().shape({
     .max(10, 'Must be 10 digits')
     .matches(/^\d+$/, 'Only numbers are allowed')
     .required('Account number is required'),
+  narration: yup
+    .string()
+    .max(100, 'Narration must not exceed 100 characters')
+    .matches(NARRATION_REGEX, {
+      message: 'Narration cannot contain emojis or special characters',
+      excludeEmptyString: true,
+    }),
 });
 
 export const standingOrderSchema = yup.object().shape({
@@ -117,6 +126,39 @@ export const ownValidationSchema = yup.object().shape({
 export const limitValidationSchema = yup.object().shape({
   customerAccountNumber: yup.string().required('Please choose a debit account'),
   channel: yup.string().required('Please choose a transfer type'),
-  newLimit: yup.string().required('New transfer limit required'),
-  newSingleCap: yup.string(),
+
+  newLimit: yup
+    .string()
+    .required('New transfer limit required')
+    .test(
+      'newLimit-non-zero',
+      'New transfer limit must be greater than zero',
+      value => {
+        console.log(
+          '[schema] newLimit test running with:',
+          JSON.stringify(value),
+        );
+        if (!value) return false;
+        const numeric = Number(clearFormatAmount(value));
+        console.log('[schema] newLimit parsed numeric:', numeric);
+        return !isNaN(numeric) && numeric > 0;
+      },
+    ),
+
+  newSingleCap: yup
+    .string()
+    .test(
+      'newSingleCap-non-zero',
+      'Single transaction cap must be greater than zero',
+      value => {
+        console.log(
+          '[schema] newSingleCap test running with:',
+          JSON.stringify(value),
+        );
+        if (!value) return true;
+        const numeric = Number(clearFormatAmount(value));
+        console.log('[schema] newSingleCap parsed numeric:', numeric);
+        return !isNaN(numeric) && numeric > 0;
+      },
+    ),
 });

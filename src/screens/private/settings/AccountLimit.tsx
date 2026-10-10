@@ -4,7 +4,7 @@ import { MainStackScreenProps } from '../../../types/navigation.types';
 import PageContainer from '../../../components/PageContainer';
 import LoadingModal from '../../../components/modals/LoadingModal';
 import HeaderAuth from '../../../components/HeaderAuth';
-import { Heading, Stack, Text, XStack, YStack } from 'tamagui';
+import { Heading, Text, XStack, YStack } from 'tamagui';
 import KycLevel from '../../../components/KycLevel';
 import { TouchableOpacity } from 'react-native';
 import Sizes, { normalizeSize } from '../../../util/size';
@@ -77,7 +77,7 @@ const AccountLimit: FC<MainStackScreenProps<'AccountLimit'>> = ({
             <TouchableOpacity
               onPress={() => navigation.navigate('AccountAllLimit')}
             >
-              <Stack flexDirection="row" alignItems="center" gap={6}>
+              <XStack flexDirection="row" alignItems="center" gap={6}>
                 <Heading
                   color={colors.lightPrimary}
                   fontFamily="Inter-Bold"
@@ -87,7 +87,7 @@ const AccountLimit: FC<MainStackScreenProps<'AccountLimit'>> = ({
                   View All Limits
                 </Heading>
                 <ArrowRight color={colors.lightPrimary} />
-              </Stack>
+              </XStack>
             </TouchableOpacity>
           }
         />

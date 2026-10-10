@@ -8,8 +8,16 @@ import { Platform } from 'react-native';
 import { normalizeSize } from '../util/size';
 
 const Button = memo(
-  ({ children, loading, variant, disabled, ...others }: ButtonProps) => {
+  ({
+    children,
+    loading,
+    variant,
+    disabled,
+    onPress,
+    ...others
+  }: ButtonProps) => {
     const { colors } = useTheme();
+    const isDisabled = !!(loading || disabled);
 
     return (
       <StyledButton
@@ -24,9 +32,11 @@ const Button = memo(
         borderRadius={normalizeSize(16)}
         borderColor={variant === 'outlined' ? colors.borderColor : ''}
         borderWidth={variant === 'outlined' ? 1 : 0}
-        disabled={loading || disabled}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         {...others}
+        aria-disabled={isDisabled}
+        opacity={isDisabled ? 0.5 : 1}
+        onPress={isDisabled ? undefined : onPress}
         icon={loading ? <Spinner size="small" /> : undefined}
       >
         {children}

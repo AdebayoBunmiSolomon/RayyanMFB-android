@@ -302,7 +302,13 @@ const SetTransactionLimit: FC<MainStackScreenProps<'SetTransactionLimit'>> = ({
                     placeholder="Amount"
                     keyboardType="number-pad"
                     value={values.newLimit}
-                    onChangeText={handleChange('newLimit')}
+                    onChangeText={text => {
+                      console.log(
+                        '[screen] newLimit onChangeText received:',
+                        JSON.stringify(text),
+                      );
+                      handleChange('newLimit')(text);
+                    }}
                     onBlur={handleBlur('newLimit')}
                     error={touched.newLimit && errors.newLimit}
                   />
@@ -333,7 +339,14 @@ const SetTransactionLimit: FC<MainStackScreenProps<'SetTransactionLimit'>> = ({
                 </>
               )}
             </YStack>
-
+            {console.log(
+              '[screen] isValid:',
+              isValid,
+              'dirty:',
+              dirty,
+              'errors:',
+              JSON.stringify(errors),
+            )}
             <XStack
               gap={16}
               style={{

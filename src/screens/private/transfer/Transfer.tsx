@@ -106,11 +106,22 @@ const Transfer: FC<MainStackScreenProps<'Transfer'>> = ({
       {selected === 2 && (
         <OtherBanks
           transDetails={transDetails}
-          onPress={(item: ReviewRoute) =>
+          onPress={(item: ReviewRoute) => {
+            console.log('payload from OtherBanks', item);
             navigation.navigate('ReviewsOwnAccount', {
               item: { ...item, type: 'other' },
-            })
-          }
+              transDetailsFromTransferHistory: {
+                institutionName: item?.beneficiaryBankName,
+                institutionCode: item?.beneficiaryBank,
+                accountName: item?.beneficiaryAccountName,
+                customerAccountNumber: item?.customerAccountNumber,
+                accountNumber: item?.beneficiaryAccountNumber,
+                beneficiaryBank: item?.beneficiaryBank,
+                amount: item?.amount,
+                narration: item?.remarks,
+              },
+            });
+          }}
           account={account}
         />
       )}

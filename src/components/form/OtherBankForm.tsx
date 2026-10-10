@@ -19,6 +19,7 @@ import otherBankStyles from '../../styles/otherBanks';
 import { useTheme } from '../../context/ThemeContext';
 import { useAppSelector } from '../../hooks/hook';
 import { ActivityIndicator } from 'react-native';
+import { sanitizeNarration } from '../../util/sanitize';
 
 interface Props {
   contacts: BeneficiaryTypes[];
@@ -96,7 +97,7 @@ const OtherBankForm: React.FC<Props> = ({
           beneficiaryAccountName: accountName ?? values.accountName,
           amount: values.amount,
           customerAccountNumber: values.customerAccountNumber,
-          remarks: values.narration,
+          remarks: sanitizeNarration(values.narration || ''),
           beneficiaryBank: values.institutionCode,
           beneficiaryBankName:
             selectedBankObj?.institutionName ?? values.institutionName,
@@ -219,11 +220,17 @@ const OtherBankForm: React.FC<Props> = ({
                   )
                 }
               />
+
               <Input
                 label="Narration"
-                value={values.narration}
-                onChangeText={handleChange('narration')}
-                placeholder="Description"
+                value={values.narration || ''}
+                onChangeText={text => {
+                  const sanitized = sanitizeNarration(text);
+                  console.log('RAYYAN raw:', JSON.stringify(text));
+                  console.log('RAYYAN sanitized:', JSON.stringify(sanitized));
+                  handleChange('narration')(sanitized);
+                }}
+                placeholder="Narration"
               />
               <XStack justifyContent="space-between">
                 <Text

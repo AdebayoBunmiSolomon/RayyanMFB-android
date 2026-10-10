@@ -3,6 +3,8 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Keyboard,
+  Pressable,
+  Text as RNText,
 } from 'react-native';
 
 import { Formik, FormikProps } from 'formik';
@@ -449,7 +451,10 @@ const Login: FC<PublicStackScreenProps<'Login'>> = ({ navigation }) => {
             <View marginTop="auto" marginBottom={16}>
               <XStack gap={10}>
                 <Button
-                  onPress={() => handleSubmit()}
+                  onPress={() => {
+                    // console.log('press in');
+                    handleSubmit();
+                  }}
                   disabled={!(isValid && dirty) || loading}
                   width="100%"
                   flex={1}
@@ -457,6 +462,19 @@ const Login: FC<PublicStackScreenProps<'Login'>> = ({ navigation }) => {
                 >
                   Login
                 </Button>
+
+                {/* <Pressable
+                  onPressIn={() => console.log('RAW pressIn')}
+                  onPress={() => console.log('RAW press')}
+                  disabled={!(isValid && dirty) || loading}
+                  style={{
+                    height: 50,
+                    backgroundColor: 'red',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <RNText>raw test</RNText>
+                </Pressable> */}
 
                 {rememberLogin && (
                   <Button

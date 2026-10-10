@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Text, XStack } from 'tamagui';
+import { YStack, Text, XStack } from 'tamagui';
 import Sizes from '../util/size';
 import { useTheme } from '../context/ThemeContext';
 import { Danger, Timer1 } from 'iconsax-react-native';
@@ -11,6 +11,16 @@ import { AlertCardProps } from '../types';
 import ArrowRight from '../assets/svg/arrow-right.svg';
 
 const ALERT_STORAGE_KEY = 'kycAlertDismissed';
+
+// console.log('Hello', {
+//   Danger,
+//   Timer1,
+//   CloseIcon,
+//   ArrowRight,
+//   Stack,
+//   XStack,
+//   Text,
+// });
 
 const AlertCard = ({
   currentKYCRequestId,
@@ -55,7 +65,7 @@ const AlertCard = ({
       padding={Sizes.paddingMedium}
       gap={14}
     >
-      <Stack
+      <YStack
         width={40}
         height={40}
         backgroundColor={hexToRgbA(
@@ -66,7 +76,7 @@ const AlertCard = ({
         justifyContent="center"
         alignItems="center"
       >
-        <Stack
+        <YStack
           width={30}
           height={30}
           backgroundColor={type === 'warning' ? '#FF8C00' : colors.error}
@@ -80,9 +90,9 @@ const AlertCard = ({
           ) : (
             <Danger size={20} variant="Bold" color={'#F5F5F5'} />
           )}
-        </Stack>
-      </Stack>
-      <Stack flex={1} gap={4}>
+        </YStack>
+      </YStack>
+      <YStack flex={1} gap={4}>
         <Text
           fontFamily="Inter-Bold"
           color={colors.grey06}
@@ -118,7 +128,7 @@ const AlertCard = ({
         ) : (
           ''
         )}
-      </Stack>
+      </YStack>
       {/* dismiss button */}
       <TouchableOpacity onPress={dismissAlert}>
         <CloseIcon width={18} height={18} fill={colors.grey06} />
