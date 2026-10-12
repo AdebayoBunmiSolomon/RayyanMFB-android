@@ -34,8 +34,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode 122
-        versionName "5.0.5"
+        versionCode 123
+        versionName "5.0.6"
 
         resValue "string", "IS_RETAIL", "\"true\""
         resValue "string", "IS_CORPORATE", "\"false\""
