@@ -9,21 +9,19 @@ import Sizes, { normalizeSize } from '../util/size';
 import { usePasswordRule } from '../hooks/usePasswordRule';
 import { TickCircle } from 'iconsax-react-native';
 
-const RuleItem = memo(
-  ({ passed, text }: { passed: boolean; text: string }) => {
-    const { colors } = useTheme();
-    return (
-      <XStack alignItems="center" gap={6}>
-        <TickCircle
-          size={Sizes.fontLarge}
-          color={passed ? colors.primary : colors.grey}
-          variant="Bold"
-        />
-        <Text color={passed ? colors.primary : colors.grey}>{text}</Text>
-      </XStack>
-    );
-  },
-);
+const RuleItem = memo(({ passed, text }: { passed: boolean; text: string }) => {
+  const { colors } = useTheme();
+  return (
+    <XStack alignItems="center" gap={6}>
+      <TickCircle
+        size={Sizes.fontLarge}
+        color={passed ? colors.primary : colors.grey}
+        variant="Bold"
+      />
+      <Text color={passed ? colors.primary : colors.grey}>{text}</Text>
+    </XStack>
+  );
+});
 
 const Input = memo(
   ({
@@ -38,12 +36,13 @@ const Input = memo(
     ...others
   }: InputProps) => {
     const { colors } = useTheme();
+    const isReadOnly = others.editable === false;
     const { passwordRules, isRuleHasError, checkPasswordRules } =
       usePasswordRule();
-    if (showRules) 
-  label?.toLowerCase().includes('password') && isRuleHasError
-    ? 'Password does not meet the required criteria'
-    : error;
+    if (showRules)
+      label?.toLowerCase().includes('password') && isRuleHasError
+        ? 'Password does not meet the required criteria'
+        : error;
 
     return (
       <YStack>
@@ -76,10 +75,11 @@ const Input = memo(
             </TouchableOpacity>
           )}
           <StyledInput
+            readOnly={isReadOnly}
             borderColor={error ? colors.errorBorder : colors.borderColor}
             flex={1}
             placeholderTextColor={colors.placeholder}
-            backgroundColor={colors.input}
+            backgroundColor={isReadOnly ? colors?.lightGrey : colors.input}
             color={colors.grey05}
             pointerEvents="auto"
             {...others}

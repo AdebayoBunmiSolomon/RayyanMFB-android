@@ -35,8 +35,30 @@ const DeviceOTP: FC<PublicStackScreenProps<'DeviceOTP'>> = ({
 }) => {
   const { item } = route.params;
 
-  const verifyOtpApi = useApi({ endpoint: 'resetDevice' });
-  const sendOtpApi = useApi({ endpoint: 'sendOtp' });
+  const verifyOtpApi = useApi({
+    endpoint: 'resetDevice',
+    onSuccess: () => {
+      showSuccess('OTP Verified Successfully');
+    },
+    onError: (_error, _errorDEtails) => {
+      showError(
+        _errorDEtails?.code ?? 'Error',
+        _errorDEtails?.message ?? 'Failed to verify OTP. Please try again.',
+      );
+    },
+  });
+  const sendOtpApi = useApi({
+    endpoint: 'sendOtp',
+    onSuccess: () => {
+      showSuccess('OTP Sent Successfully');
+    },
+    onError: (_error, _errorDEtails) => {
+      showError(
+        _errorDEtails?.code ?? 'Error',
+        _errorDEtails?.message ?? 'Failed to send OTP. Please try again.',
+      );
+    },
+  });
   const { showSuccess, showError } = useAppToast();
 
   const { colors } = useTheme();
@@ -234,6 +256,15 @@ const DeviceOTP: FC<PublicStackScreenProps<'DeviceOTP'>> = ({
       </Text>
     );
   };
+
+  useEffect(() => {
+    const initiateVerifyOtp = async () => {
+      if (value.length === 6) {
+        await verifyOtp();
+      }
+    };
+    initiateVerifyOtp();
+  }, [value]);
 
   return (
     <PageContainer>

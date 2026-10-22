@@ -1,5 +1,5 @@
-import { View } from 'react-native';
-import React, { FC, useState } from 'react';
+import { Alert, View } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
 import PageContainer from '../../../components/PageContainer';
 import { MainStackScreenProps } from '../../../types/navigation.types';
 import { useAppSelector } from '../../../hooks/hook';
@@ -40,6 +40,7 @@ const GenerateStatement: FC<MainStackScreenProps<'GenerateStatement'>> = ({
   const sendStatementViaEmail = useApi({ endpoint: 'sendStatementViaEmail' });
 
   const { accounts } = useAppSelector(state => state.account);
+  const { email } = useAppSelector(state => state.auth?.data);
 
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -106,10 +107,11 @@ const GenerateStatement: FC<MainStackScreenProps<'GenerateStatement'>> = ({
 
       <Formik
         validationSchema={statementValidationSchema}
+        enableReinitialize
         initialValues={{
           fromDate: '',
           toDate: '',
-          email: '',
+          email: email ?? '',
           esign: '',
         }}
         onSubmit={async values => {
@@ -131,7 +133,7 @@ const GenerateStatement: FC<MainStackScreenProps<'GenerateStatement'>> = ({
             acctNum: accounts[0]?.accountNumber,
             tranType: 'B',
             format: 'PDF',
-            email: values.email,
+            email: email ?? '',
           };
           await sendEmailStatement(payload);
           // } else {
@@ -181,12 +183,13 @@ const GenerateStatement: FC<MainStackScreenProps<'GenerateStatement'>> = ({
               />
 
               <Input
-                value={values.email}
-                onChangeText={handleChange('email')}
+                value={email}
+                // onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 label="Email Address"
                 placeholder="Email address"
                 error={touched.email && errors.email}
+                editable={false}
               />
 
               <XStack

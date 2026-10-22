@@ -10,7 +10,6 @@ const StyledInput = styled(InputCore, {
   fontSize: Sizes.fontLarge,
   padding: normalizeSize(18),
   borderRadius: normalizeSize(16),
-  editable: true,
   selectTextOnFocus: false,
 });
 

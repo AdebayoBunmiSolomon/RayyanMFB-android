@@ -40,6 +40,7 @@ export type InputProps = {
   selectProvider?: (arg0: number) => void;
   airtimeList?: AirtimeCodes[];
   showRules?: boolean;
+  editable?: boolean;
 } & TagUIInputProps;
 
 export type HeadingAuthProps = {
